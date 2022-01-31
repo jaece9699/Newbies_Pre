@@ -59,7 +59,7 @@ public class Move : MonoBehaviour
         Debug.Log("RaycastHit Distance :"+rayHit.distance);
         rayHitDistance = rayHit.distance;
         
-        if (!isJumping || rayHit.collider == null || rayHit.distance>=1.5f)
+        if (!isJumping || rayHit.collider == null || rayHit.distance>=1.55f)
             return;
         
         //Prevent Velocity amplification.
