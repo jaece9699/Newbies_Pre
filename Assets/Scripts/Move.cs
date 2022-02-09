@@ -85,7 +85,7 @@ public class Move : MonoBehaviour
 
     void onDamaged(Vector2 targetPos)
     {
-        gameObject.layer = 9;
+        gameObject.layer = 8;
         
         spriterenderer.color = new Color(1, 1, 1, 0.4f);
 
