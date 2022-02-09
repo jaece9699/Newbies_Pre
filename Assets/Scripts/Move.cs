@@ -10,6 +10,7 @@ public class Move : MonoBehaviour
 
     private float rayHitDistance = 0.0f;
     Rigidbody2D rigid;
+    private Animator animator;
 
     private SpriteRenderer spriterenderer;
     //Vector2 rigidPosition;
@@ -23,12 +24,16 @@ public class Move : MonoBehaviour
         rigid = gameObject.GetComponent<Rigidbody2D> ();
         //rigidPosition = new Vector2(rigid.position.x, rigid.position.y-);
         spriterenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     //Graphic & Input Updates
     void Update ()
     {
-        if (Input.GetButtonDown ("Jump")==true && rayHitDistance>=1.4f) {
+        
+        
+        if (Input.GetButtonDown ("Jump")==true && rayHitDistance>=0.010f) {
+            
             isJumping = true;
         }
     }
@@ -48,22 +53,32 @@ public class Move : MonoBehaviour
 
         if (Input.GetAxisRaw ("Horizontal") < 0) {
             moveVelocity = Vector3.left;
+            animator.SetBool("run", true);
+            spriterenderer.flipX = true;
         }
 			
         else if(Input.GetAxisRaw ("Horizontal") > 0){
-            moveVelocity = Vector3.right;
-        }	
+            moveVelocity = Vector3.right; 
+            animator.SetBool("run", true);
+            spriterenderer.flipX = false;
 
+        }
+        else
+        {
+            animator.SetBool("run", false);
+        }
+        
         transform.position += moveVelocity * movePower * Time.deltaTime;
     }
 
     void Jump ()
     {
-        RaycastHit2D rayHit = Physics2D.Raycast(rigid.position, Vector3.down, 2,LayerMask.GetMask("Floor"));
-        //Debug.Log("RaycastHit Distance :"+rayHit.distance);
+        Debug.DrawRay(rigid.position,Vector3.down, new Color(0, 1, 0));
+        RaycastHit2D rayHit = Physics2D.Raycast(rigid.position, Vector3.down, 1,LayerMask.GetMask("Floor"));
+        // Debug.Log("RaycastHit Distance :"+rayHit.distance);
         rayHitDistance = rayHit.distance;
         
-        if (!isJumping || rayHit.collider == null || rayHit.distance>=1.55f)
+        if (!isJumping || rayHit.collider == null || rayHit.distance>=0.023f)
             return;
         
         //Prevent Velocity amplification.
