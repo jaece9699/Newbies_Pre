@@ -27,14 +27,29 @@ public class Move : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    private float curTime;
+    private float coolTime = 0.4f;
+    
     //Graphic & Input Updates
     void Update ()
     {
         
         
-        if (Input.GetButtonDown ("Jump")==true && rayHitDistance>=0.010f) {
-            
+        if (Input.GetKeyDown(KeyCode.Z)==true && rayHitDistance>=0.010f) 
             isJumping = true;
+
+        if (curTime <= 0)
+        {
+            if (Input.GetKey(KeyCode.X))
+            {
+                animator.SetTrigger("attack");
+                curTime = coolTime;
+
+            }
+        }
+        else
+        {
+            curTime -= Time.deltaTime;
         }
     }
 
@@ -43,6 +58,9 @@ public class Move : MonoBehaviour
     {
         Moving ();
         Jump ();
+        fallingCheck();
+       
+        
     }
 
     //---------------------------------------------------[Movement Function]
@@ -86,6 +104,8 @@ public class Move : MonoBehaviour
 
         Vector2 jumpVelocity = new Vector2 (0, jumpPower);
         rigid.AddForce(jumpVelocity, ForceMode2D.Impulse);
+        animator.SetBool("isJumping", true);
+        
         //Debug.Log("점프하고 있는가?: "+isJumping);
         isJumping = false;
     }
@@ -114,6 +134,19 @@ public class Move : MonoBehaviour
     {
         gameObject.layer = 7;
         spriterenderer.color = new Color(1, 1, 1, 1);
+    }
 
+    void fallingCheck()
+    {
+
+        if (rigid.velocity.y == 0)
+        {
+            animator.SetBool("isJumping", false);
+            animator.SetBool("isFalling", false);
+        }
+
+        if (rigid.velocity.y < 0 && !animator.GetBool("isJumping"))
+            animator.SetBool("isFalling", true);
+        
     }
 }
