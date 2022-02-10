@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Move : MonoBehaviour
+public class Player : MonoBehaviour
 {
     public float movePower = 10f;
     public float jumpPower = 10f;
@@ -28,30 +28,23 @@ public class Move : MonoBehaviour
     }
 
     private float curTime;
-    private float coolTime = 0.4f;
-    
+    public float coolTime = 0.4f;
+
+    public Transform pos;
+    public Vector2 boxSize;
     //Graphic & Input Updates
     void Update ()
     {
         
-        
+        //점프키 입력 받는 코드
         if (Input.GetKeyDown(KeyCode.Z)==true && rayHitDistance>=0.010f) 
             isJumping = true;
 
-        if (curTime <= 0)
-        {
-            if (Input.GetKey(KeyCode.X))
-            {
-                animator.SetTrigger("attack");
-                curTime = coolTime;
-
-            }
-        }
-        else
-        {
-            curTime -= Time.deltaTime;
-        }
+        //기본 공격
+        normalAttack();
+        
     }
+    
 
     //Physics engine Updates
     void FixedUpdate ()
@@ -73,13 +66,16 @@ public class Move : MonoBehaviour
             moveVelocity = Vector3.left;
             animator.SetBool("run", true);
             spriterenderer.flipX = true;
+            
+
         }
 			
         else if(Input.GetAxisRaw ("Horizontal") > 0){
             moveVelocity = Vector3.right; 
             animator.SetBool("run", true);
             spriterenderer.flipX = false;
-
+            
+            
         }
         else
         {
@@ -125,7 +121,7 @@ public class Move : MonoBehaviour
         spriterenderer.color = new Color(1, 1, 1, 0.4f);
 
         int dirc = targetPos.x - transform.position.x > 0 ? -1 : 1;
-        rigid.AddForce(new Vector2(dirc,1) * 7,ForceMode2D.Impulse);
+        rigid.AddForce(new Vector2(dirc,1) * 7, ForceMode2D.Impulse);
         
         Invoke("offDamaged", 2);
     }
@@ -138,7 +134,6 @@ public class Move : MonoBehaviour
 
     void fallingCheck()
     {
-
         if (rigid.velocity.y == 0)
         {
             animator.SetBool("isJumping", false);
@@ -149,4 +144,55 @@ public class Move : MonoBehaviour
             animator.SetBool("isFalling", true);
         
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        
+            Gizmos.DrawWireCube(pos.position, boxSize);
+            Gizmos.DrawWireCube(new Vector3(pos.position.x - 2.2f, pos.position.y, pos.position.z), boxSize);
+    }
+
+    void normalAttack()
+    {
+        
+        if (curTime <= 0)
+        {
+            if (Input.GetKey(KeyCode.X))
+            {
+                Collider2D[] collider2Ds;
+                if(!spriterenderer.flipX)
+                    collider2Ds = Physics2D.OverlapBoxAll(pos.position, boxSize, 0);
+                else 
+                    collider2Ds = Physics2D.OverlapBoxAll(new Vector2(pos.position.x - 2.2f, pos.position.y), boxSize, 0);
+        
+                
+                foreach (Collider2D collider in collider2Ds)
+                {
+                    if (collider.tag == "Enemy")
+                    {
+                        collider.GetComponent<Enemy>().onDamaged(1, transform.position);
+                        collider.GetComponent<Enemy>().beingDamaged = true;
+                        StartCoroutine(beingDamagedFalse());
+
+                    }
+                }
+                
+                
+                animator.SetTrigger("attack");
+                curTime = coolTime;
+            }
+        }
+        else
+        {
+            curTime -= Time.deltaTime;
+        }
+    }
+
+    IEnumerator beingDamagedFalse()
+    {
+        yield return new WaitForSeconds(0.5f);
+        GameObject.Find("Enemy").GetComponent<Enemy>().beingDamaged = false; 
+    }
+    
 }
