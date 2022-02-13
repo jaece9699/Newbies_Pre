@@ -12,11 +12,17 @@ public class Player : MonoBehaviour
     Rigidbody2D rigid;
     private Animator animator;
 
+    
     private SpriteRenderer spriterenderer;
-    //Vector2 rigidPosition;
+    
     
     Vector3 movement;
     bool isJumping = false;
+
+    //원거리 공격 변수
+    public GameObject bullet;
+    public Transform bulletPos;
+    
     //---------------------------------------------------[Override Function]
     //Initialization
     void Start ()
@@ -27,12 +33,18 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    private float curTime;
-    public float coolTime = 0.4f;
+    //기본공격 쿨타임 변수
+    private float normalCurTime;
+    public float normalCoolTime = 0.4f;
 
+    //원거리 공격 쿨타임 변수
+    private float bulletCurTime;
+    public float bulletCoolTime;
+    
+    
     public Transform pos;
     public Vector2 boxSize;
-    //Graphic & Input Updates
+    
     void Update ()
     {
         
@@ -43,6 +55,9 @@ public class Player : MonoBehaviour
         //기본 공격
         normalAttack();
         
+        //원거리 공격
+        
+        bulletAttack();
     }
     
 
@@ -156,7 +171,7 @@ public class Player : MonoBehaviour
     void normalAttack()
     {
         
-        if (curTime <= 0)
+        if (normalCurTime <= 0)
         {
             if (Input.GetKey(KeyCode.X))
             {
@@ -180,12 +195,30 @@ public class Player : MonoBehaviour
                 
                 
                 animator.SetTrigger("attack");
-                curTime = coolTime;
+                normalCurTime = normalCoolTime;
             }
         }
         else
         {
-            curTime -= Time.deltaTime;
+            normalCurTime -= Time.deltaTime;
+        }
+    }
+
+    void bulletAttack()
+    {
+        if (bulletCurTime <= 0)
+        {
+            if (Input.GetKey(KeyCode.A))
+            {
+                Instantiate(bullet, bulletPos.position, transform.rotation);
+                bulletCurTime = bulletCoolTime;
+                animator.SetTrigger("attack");
+
+            }
+        }
+        else
+        {
+            bulletCurTime -= Time.deltaTime;
         }
     }
 
