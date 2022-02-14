@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float movePower = 10f;
-    public float jumpPower = 10f;
+    public float movePower;
+    public float jumpPower;
+    
 
+    
     private float rayHitDistance = 0.0f;
     Rigidbody2D rigid;
     private Animator animator;
@@ -23,8 +26,7 @@ public class Player : MonoBehaviour
     public GameObject bullet;
     public Transform bulletPos;
     
-    //---------------------------------------------------[Override Function]
-    //Initialization
+    
     void Start ()
     {
         rigid = gameObject.GetComponent<Rigidbody2D> ();
@@ -45,6 +47,10 @@ public class Player : MonoBehaviour
     public Transform pos;
     public Vector2 boxSize;
     
+    
+    
+    
+    
     void Update ()
     {
         
@@ -52,12 +58,14 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z)==true && rayHitDistance>=0.010f) 
             isJumping = true;
 
+        
+        
         //기본 공격
         normalAttack();
         
         //원거리 공격
-        
         bulletAttack();
+        
     }
     
 
@@ -67,11 +75,9 @@ public class Player : MonoBehaviour
         Moving ();
         Jump ();
         fallingCheck();
-       
-        
     }
 
-    //---------------------------------------------------[Movement Function]
+    
 
     void Moving ()
     {		
@@ -89,8 +95,6 @@ public class Player : MonoBehaviour
             moveVelocity = Vector3.right; 
             animator.SetBool("run", true);
             spriterenderer.flipX = false;
-            
-            
         }
         else
         {
@@ -213,7 +217,6 @@ public class Player : MonoBehaviour
                 Instantiate(bullet, bulletPos.position, transform.rotation);
                 bulletCurTime = bulletCoolTime;
                 animator.SetTrigger("attack");
-
             }
         }
         else
