@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public static Player _player;
+    
     public float movePower;
     public float jumpPower;
     
@@ -29,6 +31,8 @@ public class Player : MonoBehaviour
     
     void Start ()
     {
+        _player = this;
+        
         rigid = gameObject.GetComponent<Rigidbody2D> ();
         //rigidPosition = new Vector2(rigid.position.x, rigid.position.y-);
         spriterenderer = GetComponent<SpriteRenderer>();
@@ -42,8 +46,8 @@ public class Player : MonoBehaviour
     //원거리 공격 쿨타임 변수
     private float bulletCurTime;
     public float bulletCoolTime;
-    
-    
+
+
     public Transform pos;
     public Vector2 boxSize;
     
@@ -65,7 +69,7 @@ public class Player : MonoBehaviour
         
         //원거리 공격
         bulletAttack();
-        
+
     }
     
 
@@ -142,6 +146,9 @@ public class Player : MonoBehaviour
         int dirc = targetPos.x - transform.position.x > 0 ? -1 : 1;
         rigid.AddForce(new Vector2(dirc,1) * 7, ForceMode2D.Impulse);
         
+        PlayerStat._playerStat.Hit(Enemy._enemy.atk);
+        Debug.Log(PlayerStat._playerStat.currentHp);
+        
         Invoke("offDamaged", 2);
     }
 
@@ -201,6 +208,13 @@ public class Player : MonoBehaviour
                 animator.SetTrigger("attack");
                 normalCurTime = normalCoolTime;
             }
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                if (PlayerStat._playerStat.currentHp > 5) 
+                    return;
+                    
+                normalCurTime = 10f;
+            }
         }
         else
         {
@@ -218,6 +232,13 @@ public class Player : MonoBehaviour
                 bulletCurTime = bulletCoolTime;
                 animator.SetTrigger("attack");
             }
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                if (PlayerStat._playerStat.currentHp > 5)
+                    return;
+                
+                bulletCurTime = 10f;
+            }
         }
         else
         {
@@ -230,5 +251,6 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         GameObject.Find("Enemy").GetComponent<Enemy>().beingDamaged = false; 
     }
-    
+
+
 }

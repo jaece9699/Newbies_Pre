@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public static Enemy _enemy;
+    
     Rigidbody2D rigid;
     public int nextMove;
 
     public int Hp;
     public bool beingDamaged = false;
-
+    
+    public int atk; //공격력
+    
     void Awake()
     {
-        
+        _enemy = this;
         rigid = GetComponent<Rigidbody2D>();
         Think();
     }
-
+    
+    
     
     void FixedUpdate()
     {
