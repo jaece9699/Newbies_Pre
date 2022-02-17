@@ -36,8 +36,8 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Options");
     }
 
-    public void onClickExit()
+    public void onClickQuitGame()
     {
-        Debug.Log("Exit");
+        Application.Quit();
     }
 }
