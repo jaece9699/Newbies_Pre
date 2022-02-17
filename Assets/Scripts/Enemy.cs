@@ -10,9 +10,12 @@ public class Enemy : MonoBehaviour
     public int nextMove;
 
     public int Hp;
+    public int currentHp;
+    
     public bool beingDamaged = false;
     
     public int atk; //공격력
+    public int def; //방어력
     
     void Awake()
     {
@@ -64,8 +67,8 @@ public class Enemy : MonoBehaviour
 
     public void onDamaged(int damage, Vector2 targetPos)
     {
-        
-        Hp = Hp - damage;
+        PlayerStat._playerStat.atk = damage;
+        // Hp = Hp - damage;
         int dirc = targetPos.x - transform.position.x > 0 ? -1 : 1;
         Debug.Log(dirc);
         rigid.velocity = new Vector2(dirc*4, 3);

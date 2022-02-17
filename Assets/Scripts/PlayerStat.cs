@@ -12,8 +12,9 @@ public class PlayerStat : MonoBehaviour
     
     public int hp; //hp
     public int currentHp; //현재 hp
-    // public int atk; 공격력
-    // public int def; 방어력
+    public int atk; //공격력
+    public int def; //방어력
+    
     public Slider hpSilder;
     
     private float healCurTime;
@@ -26,9 +27,9 @@ public class PlayerStat : MonoBehaviour
         currentHp = hp;
     }
 
-    public void Hit(int _enemyAtk)
+    public void Hit(int enemyAtk) //맞을 때 hp 줄어듦
     {
-        int dmg = _enemyAtk;
+        int dmg = enemyAtk;
 
         currentHp -= dmg;
 
@@ -63,7 +64,5 @@ public class PlayerStat : MonoBehaviour
     {
         hpSilder.maxValue = hp;
         hpSilder.value = currentHp;
-        
-        healSkill(); 
     }
 }
