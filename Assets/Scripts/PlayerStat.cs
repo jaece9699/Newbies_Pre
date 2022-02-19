@@ -39,25 +39,22 @@ public class PlayerStat : MonoBehaviour
 
     public void healSkill()
     {
-        if (currentHp <= 0)
-            return;
-        else if (currentHp > 5)
+        if(healCurTime <= 0)
         {
-            Debug.Log("체력이 가득 차있습니다.");
-            return;
-        }
-        else if(healCurTime <= 0)
-        {
-            if (Input.GetKey(KeyCode.S))
+            if(Input.GetKey(KeyCode.S)) 
             {
-                currentHp += 1;
+                if (currentHp >= 5)
+                {
+                    Debug.Log("체력이 가득 차있습니다.");
+                    return;
+                }
+
+                currentHp += 1; 
                 healCurTime = healCoolTime;
             }
         }
-        else 
+        else
             healCurTime -= Time.deltaTime;
-        
-        // 10초간 공격 불가
     }
 
     void Update()

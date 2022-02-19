@@ -1,31 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
     public static Enemy _enemy;
-    
+
     Rigidbody2D rigid;
     public int nextMove;
 
-    public int Hp;
-    public int currentHp;
-    
     public bool beingDamaged = false;
-    
-    public int atk; //공격력
-    public int def; //방어력
-    
+
     void Awake()
     {
         _enemy = this;
+
         rigid = GetComponent<Rigidbody2D>();
         Think();
     }
     
-    
-    
+
+
     void FixedUpdate()
     {
         
@@ -56,7 +53,6 @@ public class Enemy : MonoBehaviour
     }
 
     
-    
     void Think()
     {
         nextMove = Random.Range(-1, 2);
@@ -64,13 +60,14 @@ public class Enemy : MonoBehaviour
         
         Invoke("Think", nextThinkTime);
     }
-
-    public void onDamaged(int damage, Vector2 targetPos)
+    
+    public void onDamaged(Vector2 targetPos)
     {
-        PlayerStat._playerStat.atk = damage;
-        // Hp = Hp - damage;
         int dirc = targetPos.x - transform.position.x > 0 ? -1 : 1;
         Debug.Log(dirc);
         rigid.velocity = new Vector2(dirc*4, 3);
+        
+        EnemyStat._enemyStat.Hit(PlayerStat._playerStat.atk);
     }
 }
+    

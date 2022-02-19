@@ -8,6 +8,7 @@ public class bullet : MonoBehaviour
     public float speed;
     private SpriteRenderer playerSprite;
     private bool isFlip;
+
     void Start()
     {
         Invoke("destroyBullet", 1);
@@ -34,7 +35,7 @@ public class bullet : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            collision.gameObject.GetComponent<Enemy>().onDamaged(1, transform.position);
+            collision.gameObject.GetComponent<Enemy>().onDamaged(transform.position);
             collision.gameObject.GetComponent<Enemy>().beingDamaged = true;
             StartCoroutine(beingDamagedFalse());
             Destroy(gameObject);

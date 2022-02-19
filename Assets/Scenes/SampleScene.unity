@@ -802,6 +802,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dfb99a6f87fa947479dcec83ed69511d, type: 3}
+--- !u!1 &1153526453 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5369062068573658175, guid: 817d579de87e68c49b3244e34ceebbdd,
+    type: 3}
+  m_PrefabInstance: {fileID: 806252222}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1153526454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153526453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dedcc96f3083f364180913cee2a711b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  atk: 1
+  def: 0
+  currentHp: 0
+  hp: 3
 --- !u!1001 &1524951247
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1416,6 +1438,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 5
   currentHp: 0
+  atk: 1
+  def: 0
   hpSilder: {fileID: 190628453}
   healCoolTime: 10
 --- !u!1 &2092808020

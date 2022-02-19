@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     void Start ()
     {
         _player = this;
-        
+
         rigid = gameObject.GetComponent<Rigidbody2D> ();
         //rigidPosition = new Vector2(rigid.position.x, rigid.position.y-);
         spriterenderer = GetComponent<SpriteRenderer>();
@@ -152,9 +152,8 @@ public class Player : MonoBehaviour
         int dirc = targetPos.x - transform.position.x > 0 ? -1 : 1;
         rigid.AddForce(new Vector2(dirc,1) * 7, ForceMode2D.Impulse);
         
-        PlayerStat._playerStat.Hit(Enemy._enemy.atk); // 맞으면 hp 줄어듦
-        Debug.Log(PlayerStat._playerStat.currentHp); //수치 확인
-        
+        PlayerStat._playerStat.Hit(EnemyStat._enemyStat.atk); // 맞으면 hp 줄어듦
+
         Invoke("offDamaged", 2);
     }
 
@@ -203,22 +202,20 @@ public class Player : MonoBehaviour
                 {
                     if (collider.tag == "Enemy")
                     {
-                        collider.GetComponent<Enemy>().onDamaged(1, transform.position);
+                        collider.GetComponent<Enemy>().onDamaged(transform.position);
                         collider.GetComponent<Enemy>().beingDamaged = true;
                         StartCoroutine(beingDamagedFalse());
-
                     }
                 }
-                
                 
                 animator.SetTrigger("attack");
                 normalCurTime = normalCoolTime;
             }
             else if (Input.GetKeyDown(KeyCode.S))
             {
-                if (PlayerStat._playerStat.currentHp > 5) 
+                if (PlayerStat._playerStat.currentHp >= 5) 
                     return;
-                    
+                
                 normalCurTime = 10f;
             }
         }
@@ -240,7 +237,7 @@ public class Player : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.S))
             {
-                if (PlayerStat._playerStat.currentHp > 5)
+                if (PlayerStat._playerStat.currentHp >= 5)
                     return;
                 
                 bulletCurTime = 10f;
