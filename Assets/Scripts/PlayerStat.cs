@@ -12,8 +12,9 @@ public class PlayerStat : MonoBehaviour
     
     public int hp; //hp
     public int currentHp; //현재 hp
-    // public int atk; 공격력
-    // public int def; 방어력
+    public int atk; //공격력
+    public int def; //방어력
+    
     public Slider hpSilder;
     
     private float healCurTime;
@@ -26,9 +27,9 @@ public class PlayerStat : MonoBehaviour
         currentHp = hp;
     }
 
-    public void Hit(int _enemyAtk)
+    public void Hit(int enemyAtk) //맞을 때 hp 줄어듦
     {
-        int dmg = _enemyAtk;
+        int dmg = enemyAtk;
 
         currentHp -= dmg;
 
@@ -38,32 +39,27 @@ public class PlayerStat : MonoBehaviour
 
     public void healSkill()
     {
-        if (currentHp <= 0)
-            return;
-        else if (currentHp > 5)
+        if(healCurTime <= 0)
         {
-            Debug.Log("체력이 가득 차있습니다.");
-            return;
-        }
-        else if(healCurTime <= 0)
-        {
-            if (Input.GetKey(KeyCode.S))
+            if(Input.GetKey(KeyCode.S)) 
             {
-                currentHp += 1;
+                if (currentHp >= 5)
+                {
+                    Debug.Log("체력이 가득 차있습니다.");
+                    return;
+                }
+
+                currentHp += 1; 
                 healCurTime = healCoolTime;
             }
         }
-        else 
+        else
             healCurTime -= Time.deltaTime;
-        
-        // 10초간 공격 불가
     }
 
     void Update()
     {
         hpSilder.maxValue = hp;
         hpSilder.value = currentHp;
-        
-        healSkill(); 
     }
 }

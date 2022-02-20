@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using UnityEngine.SceneManagement; 
 
 public class Player : MonoBehaviour
 {
     public static Player _player;
-    
+
     public float movePower;
     public float jumpPower;
     
@@ -27,12 +28,13 @@ public class Player : MonoBehaviour
     //원거리 공격 변수
     public GameObject bullet;
     public Transform bulletPos;
-    
+
+    private bool isPlayerDead = false; //죽음 판단
     
     void Start ()
     {
         _player = this;
-        
+
         rigid = gameObject.GetComponent<Rigidbody2D> ();
         //rigidPosition = new Vector2(rigid.position.x, rigid.position.y-);
         spriterenderer = GetComponent<SpriteRenderer>();
@@ -57,6 +59,7 @@ public class Player : MonoBehaviour
     
     void Update ()
     {
+        if(isPlayerDead){return;} //죽었다면 조작하지 못하도록 
         
         //점프키 입력 받는 코드
         if (Input.GetKeyDown(KeyCode.Z)==true && rayHitDistance>=0.010f) 
@@ -69,6 +72,9 @@ public class Player : MonoBehaviour
         
         //원거리 공격
         bulletAttack();
+        
+        //회복 스킬
+        PlayerStat._playerStat.healSkill(); 
 
     }
     
@@ -146,9 +152,8 @@ public class Player : MonoBehaviour
         int dirc = targetPos.x - transform.position.x > 0 ? -1 : 1;
         rigid.AddForce(new Vector2(dirc,1) * 7, ForceMode2D.Impulse);
         
-        PlayerStat._playerStat.Hit(Enemy._enemy.atk);
-        Debug.Log(PlayerStat._playerStat.currentHp);
-        
+        PlayerStat._playerStat.Hit(EnemyStat._enemyStat.atk); // 맞으면 hp 줄어듦
+
         Invoke("offDamaged", 2);
     }
 
@@ -197,22 +202,20 @@ public class Player : MonoBehaviour
                 {
                     if (collider.tag == "Enemy")
                     {
-                        collider.GetComponent<Enemy>().onDamaged(1, transform.position);
+                        collider.GetComponent<Enemy>().onDamaged(transform.position);
                         collider.GetComponent<Enemy>().beingDamaged = true;
                         StartCoroutine(beingDamagedFalse());
-
                     }
                 }
-                
                 
                 animator.SetTrigger("attack");
                 normalCurTime = normalCoolTime;
             }
             else if (Input.GetKeyDown(KeyCode.S))
             {
-                if (PlayerStat._playerStat.currentHp > 5) 
+                if (PlayerStat._playerStat.currentHp >= 5) 
                     return;
-                    
+                
                 normalCurTime = 10f;
             }
         }
@@ -234,7 +237,7 @@ public class Player : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.S))
             {
-                if (PlayerStat._playerStat.currentHp > 5)
+                if (PlayerStat._playerStat.currentHp >= 5)
                     return;
                 
                 bulletCurTime = 10f;
@@ -251,6 +254,30 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         GameObject.Find("Enemy").GetComponent<Enemy>().beingDamaged = false; 
     }
-
-
+    
+    IEnumerator CheckPlayerDeath()
+    {
+        while(true)
+        {
+            // 땅 밑으로 떨어졌다면
+            if (this.transform.position.y < -8)
+            {
+                
+            }
+            
+            // 체력이 0이하일 때
+            if (PlayerStat._playerStat.currentHp <= 0)
+            {
+                isPlayerDead = true;
+                // animator.SetTrigger("die");
+                yield return new WaitForSeconds(2); // 2초 기다리기
+                // SceneManager.LoadScene("Main");
+            }
+            yield return new WaitForEndOfFrame(); // 매 프레임의 마지막 마다 실행
+        }
+    }
+    
+    // 즉시 모든 활동을 끝내고(움직임, 상호작용 등등의 강제 정지) 연출
+    // 변수들을 초기화하고, 필요한 프리펩만 새로 생성하는 함수를 만들어서 로딩을 최소한으로 줄이는 게 좋을 것 같습니다.
+ 
 }
