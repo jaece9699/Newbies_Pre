@@ -204,7 +204,7 @@ public class Player : MonoBehaviour
                     {
                         collider.GetComponent<Enemy>().onDamaged(transform.position);
                         collider.GetComponent<Enemy>().beingDamaged = true;
-                        StartCoroutine(beingDamagedFalse());
+                        StartCoroutine(beingDamagedFalse(collider));
                     }
                 }
                 
@@ -249,10 +249,10 @@ public class Player : MonoBehaviour
         }
     }
 
-    IEnumerator beingDamagedFalse()
+    IEnumerator beingDamagedFalse(Collider2D col)
     {
         yield return new WaitForSeconds(0.5f);
-        GameObject.Find("Enemy").GetComponent<Enemy>().beingDamaged = false; 
+        col.GetComponent<Enemy>().beingDamaged = false; 
     }
     
     IEnumerator CheckPlayerDeath()

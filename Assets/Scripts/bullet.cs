@@ -8,10 +8,17 @@ public class bullet : MonoBehaviour
     public float speed;
     private SpriteRenderer playerSprite;
     private bool isFlip;
+    private BoxCollider2D col;
+    private SpriteRenderer spriterenderer;
 
     void Start()
     {
-        Invoke("destroyBullet", 1);
+        col = GetComponent<BoxCollider2D>();
+        spriterenderer = GetComponent<SpriteRenderer>();
+
+        StartCoroutine(realDestroyBullet());
+        Invoke("fakeDestroyBullet", 0.7f);
+        
         playerSprite = GameObject.Find("Player").GetComponent<SpriteRenderer>();
         isFlip = playerSprite.flipX;
     }
@@ -26,9 +33,10 @@ public class bullet : MonoBehaviour
 
     }
 
-    void destroyBullet()
+    void fakeDestroyBullet()
     {
-        Destroy(gameObject);
+        col.enabled = false;
+        spriterenderer.enabled = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -37,17 +45,29 @@ public class bullet : MonoBehaviour
         {
             collision.gameObject.GetComponent<Enemy>().onDamaged(transform.position);
             collision.gameObject.GetComponent<Enemy>().beingDamaged = true;
-            StartCoroutine(beingDamagedFalse());
-            Destroy(gameObject);
+            StartCoroutine(beingDamagedFalse(collision));
+            col.enabled = false;
+            spriterenderer.enabled = false;
+
+
 
         }
         else if(collision.gameObject.tag == "Floor")
             Destroy(gameObject);
+
     }
     
-    IEnumerator beingDamagedFalse()
+    IEnumerator beingDamagedFalse(Collision2D col)
     {
         yield return new WaitForSeconds(0.5f);
-        GameObject.Find("Enemy").GetComponent<Enemy>().beingDamaged = false; 
+        col.gameObject.GetComponent<Enemy>().beingDamaged = false; 
+           
+            
+    }
+    
+    IEnumerator realDestroyBullet()
+    {
+        yield return new WaitForSeconds(3);
+            Destroy(gameObject);
     }
 }
