@@ -13,10 +13,17 @@ public class Enemy : MonoBehaviour
 
     public bool beingDamaged = false;
 
+    private Animator anim;
+    private SpriteRenderer spriterenderer;
+
+    
+
     void Awake()
     {
         _enemy = this;
 
+        anim = GetComponent<Animator>();
+        spriterenderer = GetComponent<SpriteRenderer>();
         rigid = GetComponent<Rigidbody2D>();
         Think();
     }
@@ -46,6 +53,8 @@ public class Enemy : MonoBehaviour
         if (rayHit.collider == null)
         {
             nextMove *= -1;
+            spriterenderer.flipX = nextMove == 1;
+            
             CancelInvoke();
             Invoke("Think", Random.Range(1f, 4f));
 
@@ -55,9 +64,18 @@ public class Enemy : MonoBehaviour
     
     void Think()
     {
+        //Set next active
         nextMove = Random.Range(-1, 2);
-        float nextThinkTime = Random.Range(2f, 5f);
         
+        //Sprite Animation
+        anim.SetInteger("walkSpeed", nextMove);
+        
+        //Flip Sprite
+        if(nextMove != 0)
+            spriterenderer.flipX = nextMove == 1;
+        
+        //Recursive
+        float nextThinkTime = Random.Range(0f, 2f);
         Invoke("Think", nextThinkTime);
     }
     
@@ -65,8 +83,18 @@ public class Enemy : MonoBehaviour
     {
         int dirc = targetPos.x - transform.position.x > 0 ? -1 : 1;
         Debug.Log(dirc);
-        rigid.velocity = new Vector2(dirc*4, 3);
+        
+        spriterenderer.flipX = dirc == -1;
+        CancelInvoke();
+        Invoke("Think", 0.5f);
+        
+
+        
+        rigid.velocity = new Vector2(dirc*4, rigid.velocity.y);
+        anim.SetTrigger("damaged");
         
         EnemyStat._enemyStat.Hit(PlayerStat._playerStat.atk);
+        
+        
     }
 }

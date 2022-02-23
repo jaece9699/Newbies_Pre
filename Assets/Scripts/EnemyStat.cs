@@ -11,10 +11,16 @@ public class EnemyStat : MonoBehaviour
     public int currentHp;
     public int hp;
 
+    private Animator anim;
+    
     void Start()
     {
+        anim = GetComponent<Animator>();
+        
         currentHp = hp;
         _enemyStat = this;
+        
+        
     }
 
     public void Hit(int playerAtk)
@@ -23,10 +29,15 @@ public class EnemyStat : MonoBehaviour
         currentHp -= dmg;
 
         if (currentHp <= 0)
-        {
-            //에니메이션,이펙트 추가
-            // Destroy(GameObject);
+        { 
+            anim.SetTrigger("die");
+            Invoke("destroyEnemy", 0.35f);
         }
+    }
+
+    void destroyEnemy()
+    {
+        Destroy(gameObject);
     }
 
 }

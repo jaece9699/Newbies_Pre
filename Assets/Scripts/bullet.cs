@@ -10,6 +10,7 @@ public class bullet : MonoBehaviour
     private bool isFlip;
     private BoxCollider2D col;
     private SpriteRenderer spriterenderer;
+    
 
     void Start()
     {
@@ -44,12 +45,8 @@ public class bullet : MonoBehaviour
         if (collision.gameObject.tag == "Enemy")
         {
             collision.gameObject.GetComponent<Enemy>().onDamaged(transform.position);
+            
             collision.gameObject.GetComponent<Enemy>().beingDamaged = true;
-            
-            Debug.Log(collision.gameObject.GetComponent<Enemy>().beingDamaged + "1111");
-            Debug.Log(collision.gameObject.name);
-            
-            
             StartCoroutine(beingDamagedFalse(collision.gameObject.GetComponent<Enemy>()));
             fakeDestroyBullet();
             

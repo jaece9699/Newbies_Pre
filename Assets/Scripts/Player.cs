@@ -31,6 +31,8 @@ public class Player : MonoBehaviour
 
     private bool isPlayerDead = false; //죽음 판단
     
+    
+    
     void Start ()
     {
         _player = this;
@@ -205,6 +207,8 @@ public class Player : MonoBehaviour
                     if (collider.tag == "Enemy")
                     {
                         collider.GetComponent<Enemy>().onDamaged(transform.position);
+                        
+                        
                         collider.GetComponent<Enemy>().beingDamaged = true;
                         StartCoroutine(beingDamagedFalse(collider));
                     }
