@@ -1005,7 +1005,7 @@ MonoBehaviour:
   atk: 0
   def: 0
   currentHp: 0
-  hp: 0
+  hp: 3
 --- !u!1001 &558874976
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2102,12 +2102,12 @@ PrefabInstance:
     - target: {fileID: 5369062068573658163, guid: 817d579de87e68c49b3244e34ceebbdd,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.5
+      value: 21.4
       objectReference: {fileID: 0}
     - target: {fileID: 5369062068573658163, guid: 817d579de87e68c49b3244e34ceebbdd,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.54
+      value: 5.38
       objectReference: {fileID: 0}
     - target: {fileID: 5369062068573658163, guid: 817d579de87e68c49b3244e34ceebbdd,
         type: 3}
@@ -2245,17 +2245,22 @@ PrefabInstance:
     - target: {fileID: 1154895435929553484, guid: dfb99a6f87fa947479dcec83ed69511d,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 3
+      value: 3.842413
+      objectReference: {fileID: 0}
+    - target: {fileID: 1154895435929553484, guid: dfb99a6f87fa947479dcec83ed69511d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.71643025
       objectReference: {fileID: 0}
     - target: {fileID: 1154895435929553484, guid: dfb99a6f87fa947479dcec83ed69511d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.29
+      value: 5.7112
       objectReference: {fileID: 0}
     - target: {fileID: 1154895435929553484, guid: dfb99a6f87fa947479dcec83ed69511d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.71
+      value: 3.8416
       objectReference: {fileID: 0}
     - target: {fileID: 1154895435929553484, guid: dfb99a6f87fa947479dcec83ed69511d,
         type: 3}
@@ -3274,7 +3279,7 @@ MonoBehaviour:
   atk: 0
   def: 0
   currentHp: 0
-  hp: 0
+  hp: 3
 --- !u!1 &2012893042
 GameObject:
   m_ObjectHideFlags: 0
@@ -3710,12 +3715,12 @@ PrefabInstance:
     - target: {fileID: 5080170132216417030, guid: 7e96e90bfb39def449f0026ff4762ead,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 1.99
       objectReference: {fileID: 0}
     - target: {fileID: 5080170132216417030, guid: 7e96e90bfb39def449f0026ff4762ead,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 8.41
       objectReference: {fileID: 0}
     - target: {fileID: 5080170132216417030, guid: 7e96e90bfb39def449f0026ff4762ead,
         type: 3}

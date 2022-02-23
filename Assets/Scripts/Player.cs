@@ -66,6 +66,8 @@ public class Player : MonoBehaviour
             isJumping = true;
 
         
+
+        
         
         //기본 공격
         normalAttack();
@@ -229,7 +231,7 @@ public class Player : MonoBehaviour
     {
         if (bulletCurTime <= 0)
         {
-            if (Input.GetKey(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.A))
             {
                 Instantiate(bullet, bulletPos.position, transform.rotation);
                 bulletCurTime = bulletCoolTime;

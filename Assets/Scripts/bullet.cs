@@ -45,24 +45,26 @@ public class bullet : MonoBehaviour
         {
             collision.gameObject.GetComponent<Enemy>().onDamaged(transform.position);
             collision.gameObject.GetComponent<Enemy>().beingDamaged = true;
-            StartCoroutine(beingDamagedFalse(collision));
-            col.enabled = false;
-            spriterenderer.enabled = false;
-
-
-
+            
+            Debug.Log(collision.gameObject.GetComponent<Enemy>().beingDamaged + "1111");
+            Debug.Log(collision.gameObject.name);
+            
+            
+            StartCoroutine(beingDamagedFalse(collision.gameObject.GetComponent<Enemy>()));
+            fakeDestroyBullet();
+            
         }
         else if(collision.gameObject.tag == "Floor")
             Destroy(gameObject);
 
     }
     
-    IEnumerator beingDamagedFalse(Collision2D col)
+    IEnumerator beingDamagedFalse(Enemy enemy)
     {
+        
         yield return new WaitForSeconds(0.5f);
-        col.gameObject.GetComponent<Enemy>().beingDamaged = false; 
-           
-            
+        enemy.beingDamaged = false; 
+        
     }
     
     IEnumerator realDestroyBullet()
