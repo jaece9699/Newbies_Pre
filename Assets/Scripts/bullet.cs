@@ -49,8 +49,8 @@ public class bullet : MonoBehaviour
             collision.gameObject.GetComponent<Enemy>().beingDamaged = true;
             StartCoroutine(beingDamagedFalse(collision.gameObject.GetComponent<Enemy>()));
             fakeDestroyBullet();
-            
         }
+        
         else if(collision.gameObject.tag == "Floor")
             Destroy(gameObject);
 

@@ -217,6 +217,7 @@ public class Player : MonoBehaviour
                 animator.SetTrigger("attack");
                 normalCurTime = normalCoolTime;
             }
+            //회복 스킬
             else if (Input.GetKeyDown(KeyCode.S))
             {
                 if (PlayerStat._playerStat.currentHp >= 5) 
