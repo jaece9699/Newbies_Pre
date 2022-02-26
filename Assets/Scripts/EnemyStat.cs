@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyStat : MonoBehaviour
 {
-    public static EnemyStat _enemyStat;
+    
 
     public int atk; //공격력
     public int def; //방어력
@@ -18,7 +18,7 @@ public class EnemyStat : MonoBehaviour
         anim = GetComponent<Animator>();
         
         currentHp = hp;
-        _enemyStat = this;
+       
         
         
     }

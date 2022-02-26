@@ -30,17 +30,19 @@ public class Player : MonoBehaviour
     public Transform bulletPos;
 
     private bool isPlayerDead = false; //죽음 판단
-    
+
+    private PlayerStat _playerStat;
+    private EnemyStat _enemyStat;
     
     
     void Start ()
     {
-        _player = this;
-
+        
         rigid = gameObject.GetComponent<Rigidbody2D> ();
         //rigidPosition = new Vector2(rigid.position.x, rigid.position.y-);
         spriterenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        _playerStat = GetComponent<PlayerStat>();
     }
 
     //기본공격 쿨타임 변수
@@ -143,7 +145,9 @@ public class Player : MonoBehaviour
     {
         if (col.gameObject.tag == "Enemy")
         {
+            _enemyStat = col.gameObject.GetComponent<EnemyStat>();
             onDamaged(col.transform.position);
+            
         }
     }
 
@@ -156,7 +160,7 @@ public class Player : MonoBehaviour
         int dirc = targetPos.x - transform.position.x > 0 ? -1 : 1;
         rigid.AddForce(new Vector2(dirc,1) * 7, ForceMode2D.Impulse);
         
-        PlayerStat._playerStat.Hit(EnemyStat._enemyStat.atk); // 맞으면 hp 줄어듦
+        PlayerStat._playerStat.Hit(_enemyStat.atk); // 맞으면 hp 줄어듦
 
         Invoke("offDamaged", 2);
     }

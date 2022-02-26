@@ -6,8 +6,6 @@ using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
-    public static Enemy _enemy;
-
     Rigidbody2D rigid;
     public int nextMove;
 
@@ -16,15 +14,19 @@ public class Enemy : MonoBehaviour
     private Animator anim;
     private SpriteRenderer spriterenderer;
 
+    private EnemyStat _enemyStat;
+
     
 
     void Awake()
     {
-        _enemy = this;
+        
 
         anim = GetComponent<Animator>();
         spriterenderer = GetComponent<SpriteRenderer>();
         rigid = GetComponent<Rigidbody2D>();
+        _enemyStat = GetComponent<EnemyStat>();
+        
         Think();
     }
     
@@ -93,8 +95,7 @@ public class Enemy : MonoBehaviour
         rigid.velocity = new Vector2(dirc*4, rigid.velocity.y);
         anim.SetTrigger("damaged");
         
-        EnemyStat._enemyStat.Hit(PlayerStat._playerStat.atk);
-        
+        _enemyStat.Hit(PlayerStat._playerStat.atk);
         
     }
 }
